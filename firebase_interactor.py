@@ -1,5 +1,4 @@
 from firebase import firebase
-import json, ast
 import time
 from datetime import datetime
 from operator import itemgetter
@@ -46,9 +45,13 @@ class Firebase_Interactor:
             for value in data.values():
                 temp.append(value)
             ret_data.append(temp)
-            temp[1] = temp[1][5:] # remove year
 
-        ret_data = ast.literal_eval(json.dumps(ret_data))
         ret_data = sorted(ret_data, key=itemgetter(1)) # sort by date
-        # print ret_data
+
+        for datalist in ret_data:
+            datalist[1] = datalist[1][5:] # remove year
+
         return ret_data
+
+    def check_overdue(self, subteam):
+        self.display_list(subteam)
