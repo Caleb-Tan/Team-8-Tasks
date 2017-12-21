@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Team 8 Tasks</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="https://avatars3.githubusercontent.com/u/1227303?v=3&s=280" type="image/png">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"> 
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.4.1/css/mdb.min.css" rel="stylesheet">  
+  <style>
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background-color:#f5f5f5;
+    }
+    p {
+      word-wrap: break-word;
+
+    }
+    /* make logo smaller */
+    h2 {
+      font-size:28px;
+      color:white;
+    }
+
+    h3 {
+      margin-top:0px;
+    }
+
+    .nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover{
+      background-color:#427272;
+    }
+    
+    /* remove annoying a styling */
+    a {
+      text-decoration:none;
+      color:black;
+    }
+    a:hover {
+      color: black;
+    }
+  
+    /* panel styling */
+    div.panel.subteam:hover{
+      transition: box-shadow 0.2s ease-in-out;
+      box-shadow: 0px 2px 2px 1px #b3b3b3;
+    }
+
+    div.panel {
+      background-color:white;
+      padding:10px;
+    }
+
+    ul {
+      margin:0px;
+    }
+
+    div.task, div.taskdate {
+      padding:0px;
+    }
+
+    @media (max-width:457px) {
+        div.taskdate {
+          min-width:120px; /* pushes it to new line at mobile sizes*/
+        }
+    }
+    /* add task button styling */
+    button.btn-info, button.btn-danger {
+      margin:0px;
+      font-size:10px !important;
+      margin-right:10px;
+    }
+    button.btn-info {
+      background-color:#427272;
+    }
+    button.btn-danger{
+      background-color:#f7726f;
+    }
+    button.btn-danger:hover {
+      background-color:#ed4844;
+    }
+    button.btn-info:hover {
+      background-color:#558e8e !important; 
+    }
+    button.btn-info:focus {
+      background-color:#558e8e !important;
+    }
+    button.btn-danger:focus {
+      background-color:#ed4844;
+    }
+    
+    button.edit {
+      padding:10px; 
+      margin:0px; 
+      margin-left:10px; 
+      margin-bottom:5px;
+      width:60px;
+    }
+    i {
+      font-size:19px !important;
+      float:right;
+    }
+
+    i.fa-trash-o {
+      margin-left:15px; 
+      color:#ed4844;
+    }
+    
+    i.fa-check-circle {
+      color:#85CD00;
+    }
+
+    i.fa-pencil-square-o {
+      color:#4285F4;
+    }
+
+    i.fa-tasks {
+      color:#427272;
+    }
+
+    div.form-group {
+      margin-bottom:0px;
+    }
+    /* make left part scrollable */
+    .scrollable {
+      height: 95vh;
+      overflow: hidden;
+    }
+    /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+    .row.content {height: 100vh}
+    
+    /* Set gray background color and 100% height */
+    .sidenav {
+      background-color: #2f4f4f;
+      height: 100%;
+    }
+        
+    /* Screen css responsiveness */
+    @media screen and (max-width: 767px) {
+      .row.content {height: auto;} 
+    }
+
+    @media screen and (min-width: 1200px) {
+      button.clear {
+        margin-left:20%; /* make clear all buttons responsive */
+      }
+    }
+
+    @media screen and (max-width: 767px) {
+      button.clear {
+        margin-left:40%; /* make clear all buttons responsive */
+      }
+    }
+    td {
+      font-size:15px !important;
+    }
+
+    
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-inverse visible-xs">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="/">Team 8 Tasks</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/">Dashboard</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container-fluid">
+  <div class="row content">
+    <div class="col-sm-2 sidenav hidden-xs">
+      <a href="/"><h2>Team 8 Tasks</h2></a>
+      <ul class="nav nav-pills nav-stacked">
+        <li class="active pills"><a href="/">Dashboard</a></li>
+      </ul><br>
+    </div>
+    <br>
