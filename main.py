@@ -16,7 +16,7 @@ def list_subteams():
     specops_list = ['Drive Team', 'Strategy and Scouting', 'Zero Robotics', 'VEX']
     admin_list = {'Team Captain': 'Devin Ardeshna', 'Assistant Captain': 'Annalee Soohoo', 'Project Manager': 'Eli Zucker', 'Strategic Director': 'Simran Pujji'}
     
-    return render_template('home.html', subteams=subteam_list, management=management_list, spec_ops=specops_list, admin=admin_list)
+    return render_template('home.html', subteams=subteam_list, management=management_list, spec_ops=specops_list, admin=admin_list, date=datetime.date.today().strftime("%m/%d"))
 
 @app.route('/<name>')
 def display_subteam(name):
@@ -31,21 +31,21 @@ def add_task(name):
         fb.add_task(name, task) # calls firebase interactor's add task method
     
     ret_data = fb.display_list(name)
-    return render_template('subteam.html', subteam=name, data=ret_data)
+    return render_template('subteam.html', subteam=name, data=ret_data, date=datetime.date.today().strftime("%m/%d"))
     
 @app.route('/<name>/update_task/<status>/<id_task>')
 def update_task(name, status, id_task):
     fb.update_task(name, status, id_task) 
     ret_data = fb.display_list(name) # updates data
     
-    return render_template('subteam.html', subteam=name, data=ret_data)
+    return render_template('subteam.html', subteam=name, data=ret_data, date=datetime.date.today().strftime("%m/%d"))
 
 @app.route('/<name>/delete_task/<id_task>')
 def delete_task(name, id_task):
      fb.delete_task(name, id_task)
      ret_data = fb.display_list(name) # updates data
      
-     return render_template('subteam.html', subteam=name, data=ret_data)
+     return render_template('subteam.html', subteam=name, data=ret_data, date=datetime.date.today().strftime("%m/%d"))
 
 @sched.cron_schedule(hour=0)
 def check_overdue():

@@ -14,7 +14,7 @@ class Firebase_Interactor:
             y = raw_task[key].encode("ascii")
             task[x] = y
         task["completed"] = 0
-        task["date-added"] = datetime.date.today().strftime('%m-%d')
+        task["date-added"] = datetime.date.today()
         result = Firebase_Interactor.fb.post('/'+subteam, task)
 
     def update_task(self, subteam, status, id_task):
@@ -57,11 +57,11 @@ class Firebase_Interactor:
     def check_overdue(self):
         all_ret_data = Firebase_Interactor.fb.get('/', None)
         yesterday_date = (datetime.date.today() - datetime.timedelta(days=1)).strftime("%m-%d")
-
+        print yesterday_date
         for key in all_ret_data.keys():
             ret_data = self.display_list(key)
             for datalist in ret_data:
-                print datalist
-                if yesterday_date == datalist[1] and datalist[3] != 1:   # if due date is equal to yesterday's date, mark as overdue (2)
+                print datalist[1]
+                if yesterday_date == datalist[1] and datalist[3] == 0:   # if due date is equal to yesterday's date, mark as overdue (2)
                     Firebase_Interactor.fb.put('/'+key+'/'+datalist[0], 'completed', 2)
                 

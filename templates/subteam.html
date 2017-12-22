@@ -1,21 +1,22 @@
 {% include 'navbar.html' %}    
     <div class="col-sm-10 scrollable">
       <div class="row">
-        <div class="col-sm-9">
+        <div class="col-sm-10">
           <h3>{{subteam}}</h3>
-          
         </div>
-        <div class="col-sm-3">
-          <h3>{{date}}</h3>
+        <div class="col-sm-2">
+          <h3 class="date">{{date}}</h3>
         </div>
-        <hr>
+        <div class="col-sm-12">
+          <hr>
+        </div>
         <div class="col-sm-7">
           <div class="panel" style="height:85vh;">
             <div class="row">
               <div class="col-xs-9"><h4 style="margin-top:6px; font-size:20px;">Ongoing</h4></div>
               <div class="col-xs-3"><button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#addTask">Add Task</button></div>
             </div>  
-            <hr style="margin-top:8px; margin-bottom:0px;">
+            <hr style="margin-bottom:0px;">
             <table class="table table-hover table-responsive" style="table-layout:fixed; width:100%;">
                 <tbody>
                 {% for obj in data %}
@@ -52,7 +53,7 @@
               <div class="col-xs-7"><h4 style="margin-top:6px; font-size:20px;">Overdue</h4></div>
               <div class="col-xs-5"><button type="button" class="btn btn-danger btn-lg clear">Clear All</button></div>
             </div>  
-            <hr style="margin-top:8px;">
+            <hr>
             <table class="table table-hover table-responsive" style="table-layout:fixed; width:100%;">
               <tbody>
               {% for obj in data %}
@@ -86,7 +87,7 @@
               <div class="col-xs-7"><h4 style="margin-top:6px; font-size:20px;">Recently Completed</h4></div>
               <div class="col-xs-5"><button type="button" class="btn btn-danger btn-lg clear">Clear All</button></div>
             </div>  
-            <hr style="margin-top:8px;">
+            <hr>
             <table class="table table-hover table-responsive" style="table-layout:fixed; width:100%;">
               <tbody>
               {% for obj in data %}
