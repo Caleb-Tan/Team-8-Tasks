@@ -1,12 +1,12 @@
 from flask import Flask, render_template, request
 from firebase_interactor import Firebase_Interactor
 from firebase import firebase
-from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.scheduler import Scheduler
 
 
 app = Flask(__name__) # flask app
 fb = Firebase_Interactor() # firebase initialization
-scheduler = BackgroundScheduler() # background task scheduler
+sched = Scheduler()
 
 
 @app.route('/')
@@ -47,13 +47,14 @@ def delete_task(name, id_task):
      
      return render_template('subteam.html', subteam=name, data=ret_data)
 
-@scheduler.scheduled_job('cron', hour=7)
+@sched.cron_schedule(hour=7)
 def check_overdue():
-    fb.check_overdue
+    fb.check_overdue()
 
-scheduler.start()
+# scheduler.add_job(check_overdue trigger='interval', seconds=3)
 
 if __name__ == "__main__":
+    sched.start()
     app.run(debug=True)
     
     
