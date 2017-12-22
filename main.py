@@ -2,7 +2,7 @@ from flask import Flask, render_template, request
 from firebase_interactor import Firebase_Interactor
 from firebase import firebase
 from apscheduler.scheduler import Scheduler
-
+import datetime
 
 app = Flask(__name__) # flask app
 fb = Firebase_Interactor() # firebase initialization
@@ -22,7 +22,7 @@ def list_subteams():
 def display_subteam(name):
     ret_data = fb.display_list(name) # updates data
     
-    return render_template('subteam.html', subteam=name, data=ret_data)
+    return render_template('subteam.html', subteam=name, data=ret_data, date=datetime.date.today().strftime("%m/%d"))
 
 @app.route('/<name>/add_task', methods=['POST'])
 def add_task(name):
@@ -47,11 +47,9 @@ def delete_task(name, id_task):
      
      return render_template('subteam.html', subteam=name, data=ret_data)
 
-@sched.cron_schedule(hour=7)
+@sched.cron_schedule(hour=0)
 def check_overdue():
     fb.check_overdue()
-
-# scheduler.add_job(check_overdue trigger='interval', seconds=3)
 
 if __name__ == "__main__":
     sched.start()
