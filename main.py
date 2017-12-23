@@ -1,13 +1,12 @@
 from flask import Flask, render_template, request
 from firebase_interactor import Firebase_Interactor
-from firebase import firebase
-from apscheduler.scheduler import Scheduler
+import slack_interactor as slack
+from apscheduler.scheduler import Scheduler 
 import datetime
 
 app = Flask(__name__) # flask app
 fb = Firebase_Interactor() # firebase initialization
 sched = Scheduler()
-
 
 @app.route('/')
 def list_subteams():
@@ -36,14 +35,14 @@ def add_task(name):
 @app.route('/<name>/update_task/<status>/<id_task>')
 def update_task(name, status, id_task):
     fb.update_task(name, status, id_task) 
-    ret_data = fb.display_list(name) # updates data
+    ret_data = fb.display_list(name) # gets data
     
     return render_template('subteam.html', subteam=name, data=ret_data, date=datetime.date.today().strftime("%m/%d"))
 
 @app.route('/<name>/delete_task/<id_task>')
 def delete_task(name, id_task):
      fb.delete_task(name, id_task)
-     ret_data = fb.display_list(name) # updates data
+     ret_data = fb.display_list(name) # gets data
      
      return render_template('subteam.html', subteam=name, data=ret_data, date=datetime.date.today().strftime("%m/%d"))
 
@@ -51,8 +50,15 @@ def delete_task(name, id_task):
 def check_overdue():
     fb.check_overdue()
 
+def post_tasks(name):
+    ret_data = fb.display_list(name)
+    slack.post_tasks(ret_data)
+
+post_tasks('Business')
 if __name__ == "__main__":
+    sched.add_cron_job(lambda: post_tasks('Business'), hour=7)
     sched.start()
     app.run(debug=True)
+
     
     
