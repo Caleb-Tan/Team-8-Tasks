@@ -54,7 +54,6 @@ def post_tasks(name):
     ret_data = fb.display_list(name)
     slack.post_tasks(ret_data)
 
-post_tasks('Business')
 if __name__ == "__main__":
     sched.add_cron_job(lambda: post_tasks('Business'), hour=7)
     sched.start()
