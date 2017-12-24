@@ -2,11 +2,11 @@ import requests
 import json
 
 # urls and header
-webhook_url = 'https://hooks.slack.com/services/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' # private test dm
-webhook_url_business = 'https://hooks.slack.com/services/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' # business channel
+webhook_url = 'https://hooks.slack.com/services/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' # private test dm
+webhook_url_business = 'https://hooks.slack.com/services/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' # business channel
 header = {'content-type': 'application/json'}
 
-def post_tasks(data):
+def post_tasks(data, visibility):
     ongoing = "*Ongoing:*\n"
     overdue = "*Overdue:*\n"
     completed = "*Completed:*\n"
@@ -33,7 +33,9 @@ def post_tasks(data):
         completed += "You have no completed tasks.\n"
 
     text = ongoing + overdue + completed
-
-    payload = {'text': text}
-    results = requests.post(webhook_url, json.dumps(payload), headers=header)
+    if visibility == 'visible':
+        payload = {'text' : text}
+        results = requests.post(webhook_url_business, json.dumps(payload), headers=header)
+    elif visibility == 'ephemeral':
+        return text
 

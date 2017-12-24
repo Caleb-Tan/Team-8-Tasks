@@ -3,6 +3,8 @@ from firebase_interactor import Firebase_Interactor
 import slack_interactor as slack
 from apscheduler.scheduler import Scheduler 
 import datetime
+import json
+import ast
 
 app = Flask(__name__) # flask app
 fb = Firebase_Interactor() # firebase initialization
@@ -46,16 +48,26 @@ def delete_task(name, id_task):
      
      return render_template('subteam.html', subteam=name, data=ret_data, date=datetime.date.today().strftime("%m/%d"))
 
+@app.route('/tasks', methods=['POST'])
+def display_slack_tasks():
+    text = ast.literal_eval(json.dumps(request.form)).get('text')
+    if text == 'show':
+        post_tasks('Business', 'visible')
+        return 'Success! Tasks shared to channel.'
+    else:
+        payload = post_tasks('Business', 'ephemeral')
+        return payload
+
 @sched.cron_schedule(hour=0)
 def check_overdue():
     fb.check_overdue()
 
-def post_tasks(name):
+def post_tasks(name, visibility):
     ret_data = fb.display_list(name)
-    slack.post_tasks(ret_data)
+    return slack.post_tasks(ret_data, visibility)
 
 if __name__ == "__main__":
-    sched.add_cron_job(lambda: post_tasks('Business'), hour=7)
+    sched.add_cron_job(lambda: post_tasks('Business', 'visible'), hour=8)
     sched.start()
     app.run(debug=True)
 
