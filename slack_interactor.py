@@ -2,7 +2,7 @@ import requests
 import json
 
 # urls and header
-webhook_url = 'https://hooks.slack.com/services/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' # private test dm
+webhook_url = 'https://hooks.slack.com/services/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' # private test channel
 webhook_url_business = 'https://hooks.slack.com/services/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' # business channel
 header = {'content-type': 'application/json'}
 
@@ -14,7 +14,12 @@ def post_tasks(data, visibility):
     overdue_counter = 0
     completed_counter = 0
 
-    for task in data:
+    """
+    task[3] - status
+    task[2] - text
+    task[1] - date
+    """
+    for task in data:   
         if task[3] == 0:
             ongoing += task[1] + " | " + task[2] + "\n"
             ongoing_counter += 1

@@ -9,8 +9,11 @@ import ast
 
 app = Flask(__name__) # flask app
 fb = Firebase_Interactor() # firebase initialization
-sched = Scheduler()
+sched = Scheduler() # scheduler initialization
 
+"""
+shows every subteam
+"""
 @app.route('/')
 def list_subteams():
     subteam_list = ['Design', 'Build', 'Business', 'Art']
@@ -20,35 +23,50 @@ def list_subteams():
     
     return render_template('home.html', subteams=subteam_list, management=management_list, spec_ops=specops_list, admin=admin_list, date=datetime.date.today().strftime("%m/%d"))
 
+"""
+called upon clicking on a subteam, displays tasks
+"""
 @app.route('/<name>')
 def display_subteam(name):
-    ret_data = fb.display_list(name, False) # updates data
+    ret_data = fb.display_list(name, False) 
     
     return render_template('subteam.html', subteam=name, data=ret_data, date=datetime.date.today().strftime("%m/%d"))
 
+"""
+adds a task
+"""
 @app.route('/<name>/add_task', methods=['POST'])
 def add_task(name):
     if request.method == 'POST':
         task = request.form
-        fb.add_task(name, task) # calls firebase interactor's add task method
+        fb.add_task(name, task) 
     
     ret_data = fb.display_list(name, False)
     return render_template('subteam.html', subteam=name, data=ret_data, date=datetime.date.today().strftime("%m/%d"))
     
+"""
+updates individual task
+"""
 @app.route('/<name>/update_task/<status>/<id_task>')
 def update_task(name, status, id_task):
     fb.update_task(name, status, id_task) 
-    ret_data = fb.display_list(name, False) # gets data
+    ret_data = fb.display_list(name, False) 
     print ret_data
     return render_template('subteam.html', subteam=name, data=ret_data, date=datetime.date.today().strftime("%m/%d"))
 
+"""
+deletes individual task
+"""
 @app.route('/<name>/delete_task/<id_task>')
-def delete_task(name, id_task):
+def delete_task(name, id_task):  
      fb.delete_task(name, id_task)
-     ret_data = fb.display_list(name, False) # gets data
+     ret_data = fb.display_list(name, False) 
      
      return render_template('subteam.html', subteam=name, data=ret_data, date=datetime.date.today().strftime("%m/%d"))
 
+"""
+clears every task of that status: completed/overdue
+"""
 @app.route('/<name>/clear_all/<status>')
 def clear_all(name, status):
     ret_data = fb.display_list(name, False)  # get current data
