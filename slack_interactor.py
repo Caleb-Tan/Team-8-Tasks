@@ -35,7 +35,7 @@ def post_tasks(data, visibility):
     text = ongoing + overdue + completed
     if visibility == 'visible':
         payload = {'text' : text}
-        results = requests.post(webhook_url_business, json.dumps(payload), headers=header)
+        results = requests.post(webhook_url, json.dumps(payload), headers=header)
     elif visibility == 'ephemeral':
         return text
 

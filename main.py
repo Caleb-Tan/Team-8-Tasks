@@ -6,6 +6,7 @@ import datetime
 import json
 import ast
 
+
 app = Flask(__name__) # flask app
 fb = Firebase_Interactor() # firebase initialization
 sched = Scheduler()
@@ -21,7 +22,7 @@ def list_subteams():
 
 @app.route('/<name>')
 def display_subteam(name):
-    ret_data = fb.display_list(name) # updates data
+    ret_data = fb.display_list(name, False) # updates data
     
     return render_template('subteam.html', subteam=name, data=ret_data, date=datetime.date.today().strftime("%m/%d"))
 
@@ -31,23 +32,41 @@ def add_task(name):
         task = request.form
         fb.add_task(name, task) # calls firebase interactor's add task method
     
-    ret_data = fb.display_list(name)
+    ret_data = fb.display_list(name, False)
     return render_template('subteam.html', subteam=name, data=ret_data, date=datetime.date.today().strftime("%m/%d"))
     
 @app.route('/<name>/update_task/<status>/<id_task>')
 def update_task(name, status, id_task):
     fb.update_task(name, status, id_task) 
-    ret_data = fb.display_list(name) # gets data
-    
+    ret_data = fb.display_list(name, False) # gets data
+    print ret_data
     return render_template('subteam.html', subteam=name, data=ret_data, date=datetime.date.today().strftime("%m/%d"))
 
 @app.route('/<name>/delete_task/<id_task>')
 def delete_task(name, id_task):
      fb.delete_task(name, id_task)
-     ret_data = fb.display_list(name) # gets data
+     ret_data = fb.display_list(name, False) # gets data
      
      return render_template('subteam.html', subteam=name, data=ret_data, date=datetime.date.today().strftime("%m/%d"))
 
+@app.route('/<name>/clear_all/<status>')
+def clear_all(name, status):
+    ret_data = fb.display_list(name, False)  # get current data
+    if status == 'overdue':
+        for task in ret_data:
+            if task[3] == 2:
+                fb.delete_task(name, task[0])
+    elif status == 'completed':
+        for task in ret_data:
+            if task[3] == 1:
+                fb.delete_task(name, task[0])
+    
+    updated_ret_data = fb.display_list(name, False) # get updated data
+    return render_template('subteam.html', subteam=name, data=updated_ret_data, date=datetime.date.today().strftime("%m/%d"))
+
+"""
+slack interaction methods
+"""
 @app.route('/tasks', methods=['POST'])
 def display_slack_tasks():
     text = ast.literal_eval(json.dumps(request.form)).get('text')
@@ -58,16 +77,19 @@ def display_slack_tasks():
         payload = post_tasks('Business', 'ephemeral')
         return payload
 
-@sched.cron_schedule(hour=0)
+def post_tasks(name, visibility):
+    ret_data = fb.display_list(name, False)
+    return slack.post_tasks(ret_data, visibility)
+
+"""
+scheduling, checks every new day if there are overdue tasks
+"""
+@sched.cron_schedule(hour=1)
 def check_overdue():
     fb.check_overdue()
 
-def post_tasks(name, visibility):
-    ret_data = fb.display_list(name)
-    return slack.post_tasks(ret_data, visibility)
-
 if __name__ == "__main__":
-    sched.add_cron_job(lambda: post_tasks('Business', 'visible'), hour=8)
+    sched.add_cron_job(lambda: post_tasks('Business', 'visible'), hour=7)
     sched.start()
     app.run(debug=True)
 

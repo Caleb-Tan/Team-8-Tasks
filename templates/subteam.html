@@ -51,7 +51,7 @@
           <div class="panel" style="height:50vh; overflow-y: scroll;">
             <div class="row">
               <div class="col-sm-7"><h4 style="margin-top:6px; font-size:20px;">Overdue</h4></div>
-              <div class="col-sm-5"><button type="button" class="btn btn-danger btn-lg clear">Clear All</button></div>
+              <div class="col-sm-5"><button type="button" class="btn btn-danger btn-lg clear" data-toggle="modal" data-target="#clearAllOverdue">Clear All</button></div>
             </div>  
             <hr>
             <table class="table table-hover table-responsive" style="table-layout:fixed; width:100%;">
@@ -68,8 +68,6 @@
                         <ul class="dropdown-menu pull-left" style="width:200px !important; left: -200%;">
                           <li><a href="/{{subteam}}/update_task/completed/{{obj[0]}}">Mark as Completed<i class="fa fa-check-circle" aria-hidden="true"></i>
                           </a></li>
-                          <li><a href="#">Edit<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                          </a></li>
                           <li><a href="/{{subteam}}/delete_task/{{obj[0]}}">Delete<i class="fa fa-trash-o" aria-hidden="true"></i></a></li>
                         </ul>
                     </div>
@@ -85,7 +83,7 @@
           <div class="panel" style="height:32vh; overflow-y: scroll;">
             <div class="row">
               <div class="col-sm-7"><h4 style="margin-top:6px; font-size:20px;">Recently Completed</h4></div>
-              <div class="col-sm-5"><button type="button" class="btn btn-danger btn-lg clear">Clear All</button></div>
+              <div class="col-sm-5"><button type="button" class="btn btn-danger btn-lg clear" data-toggle="modal" data-target="#clearAllCompleted">Clear All</button></div>
             </div>  
             <hr>
             <table class="table table-hover table-responsive" style="table-layout:fixed; width:100%;">
@@ -103,8 +101,6 @@
                           <li><a href="/{{subteam}}/update_task/ongoing/{{obj[0]}}">
                             Mark as Ongoing<i class="fa fa-tasks" aria-hidden="true"></i>
                           </a></li>
-                          <li><a href="#">Edit<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                          </a></li>
                           <li><a href="/{{subteam}}/delete_task/{{obj[0]}}">Delete<i class="fa fa-trash-o" aria-hidden="true"></i></a></li>
                         </ul>
                     </div>
@@ -119,6 +115,7 @@
         </div>
       </div>
 
+      <!-- add task --> 
       <div class="modal fade" id="addTask" role="dialog">
         <div class="modal-dialog">
           <!-- Modal content-->
@@ -153,6 +150,40 @@
                 </div>
               </form>
 
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- clear all overdue -->
+      <div id="clearAllOverdue" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Are you sure you want to clear all overdue tasks?</h4>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" style="font-size:10px;"><a style="color:white;" href="/{{subteam}}/clear_all/overdue">Yes</a></button>
+              <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- clear all completed -->
+      <div id="clearAllCompleted" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Are you sure you want to clear all completed tasks?</h4>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" style="font-size:10px;"><a style="color:white;" href="/{{subteam}}/clear_all/completed">Yes</a></button>
+              <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
             </div>
           </div>
         </div>
