@@ -51,7 +51,6 @@ updates individual task
 def update_task(name, status, id_task):
     fb.update_task(name, status, id_task) 
     ret_data = fb.display_list(name, False) 
-    print ret_data
     return render_template('subteam.html', subteam=name, data=ret_data, date=datetime.date.today().strftime("%m/%d"))
 
 """
@@ -107,7 +106,7 @@ def check_overdue():
     fb.check_overdue()
 
 if __name__ == "__main__":
-    sched.add_cron_job(lambda: post_tasks('Business', 'visible'), hour=7)
+    sched.add_cron_job(lambda: post_tasks('Business', 'visible'), hour=10, minute=24)
     sched.start()
     app.run(debug=True)
 

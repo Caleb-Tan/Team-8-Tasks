@@ -46,7 +46,7 @@ class Firebase_Interactor:
             ret_data.append(temp)
 
         if len(ret_data) > 1 and task_ongoing: # removes default message if there is at least one task present, and a task ongoing
-            ret_data.pop(0) 
+            ret_data = filter(lambda x:x[0]!='x',ret_data)
 
         ret_data = sorted(ret_data, key=itemgetter(1)) # sort by date
         
@@ -58,10 +58,11 @@ class Firebase_Interactor:
 
     def check_overdue(self):
         all_ret_data = Firebase_Interactor.fb.get('/', None)
-        yesterday_date = (datetime.date.today() - datetime.timedelta(days=1)).strftime("%m-%d")        
+        yesterday_date = (datetime.date.today() - datetime.timedelta(days=1)).strftime("%Y-%m-%d")        
+
         for key in all_ret_data.keys():
             ret_data = self.display_list(key, True)
             for datalist in ret_data:
-                if datalist[1] >= yesterday_date and datalist[3] == 0:   # if due date is equal to yesterday's date, mark as overdue (2)
+                if yesterday_date >= datalist[1] and datalist[3] == 0:   # if due date is equal to yesterday's date, mark as overdue (2)
                     Firebase_Interactor.fb.put('/'+key+'/'+datalist[0], 'completed', 2)
                 
