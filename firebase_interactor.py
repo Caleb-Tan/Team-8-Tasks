@@ -19,19 +19,22 @@ class Firebase_Interactor:
 
     """
     update_task() changes the status of a current task (completed or ongoing)
+    the data parameter is optional and is only used for editing a task
     """
-    def update_task(self, subteam, status, id_task):
+    def update_task(self, subteam, status, id_task, data=None):
         if status == "completed":
             Firebase_Interactor.fb.put('/'+subteam+'/'+id_task, 'completed', 1)
         elif status == "ongoing":
             Firebase_Interactor.fb.put('/'+subteam+'/'+id_task, 'completed', 0)
+        elif status == "edited":
+            Firebase_Interactor.fb.put('/'+subteam+'/'+id_task, 'date', data.get('date'))
+            Firebase_Interactor.fb.put('/'+subteam+'/'+id_task, 'text', data.get('text'))
     
     """
     edit_task() updates the information of a task
     """
     def edit_task(self, subteam, id_task, raw_task):
-        return
-        # Firebase_Interactor.fb.put('/'+subteam+'/'+id_task, {})
+        Firebase_Interactor.fb.put('/'+subteam+'/'+id_task, {})
 
     def delete_task(self, subteam, id_task):
         Firebase_Interactor.fb.delete('/'+subteam, id_task)

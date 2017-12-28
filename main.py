@@ -47,17 +47,23 @@ def add_task(name):
 """
 updates individual task
 """
-@app.route('/<name>/update_task/<status>/<id_task>')
+@app.route('/<name>/update_task/<status>/<id_task>', methods=['POST'])
 def update_task(name, status, id_task):
-    fb.update_task(name, status, id_task) 
+    if request.method == 'POST':
+        task = ast.literal_eval(json.dumps(request.form))
+        fb.update_task(name, status, id_task, task) 
+    else: 
+        fb.update_task(name, status, id_task) 
+
     ret_data = fb.display_list(name, False) 
     return render_template('subteam.html', subteam=name, data=ret_data, date=datetime.date.today().strftime("%m/%d"))
 
 """
-returns the 
+returns the edit task page with the data of the task to be edited
 """
 @app.route('/<name>/edit_task/<id_task>')
 def edit_task(name, id_task):
+    
     ret_data = fb.display_list(name, True)
     task = filter(lambda x: x[0] == id_task, ret_data)[0]  # extracts data for the specific task to edit  
 

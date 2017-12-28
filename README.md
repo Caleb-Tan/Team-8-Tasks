@@ -6,12 +6,12 @@ This repository contains a task app for Paly Robotics. Users can enter the subte
 
 # Dependencies
 
-The app runs [Python 2.7.9+](https://www.python.org/downloads/release/python-279/), and in order to run the server, the following pip dependencies must be installed: 
+The app runs [Python 2.7.9+](https://www.python.org/downloads/release/python-279/), and in order to run the server, the following pip dependencies must be installed with the specified versions: 
 
 ```
 pip install flask
 pip install requests==1.1.0
 pip install python-firebase
-pip install apscheduler
+pip install apscheduler==2.1.2 
 ```
 
