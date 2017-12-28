@@ -54,6 +54,17 @@ def update_task(name, status, id_task):
     return render_template('subteam.html', subteam=name, data=ret_data, date=datetime.date.today().strftime("%m/%d"))
 
 """
+returns the 
+"""
+@app.route('/<name>/edit_task/<id_task>')
+def edit_task(name, id_task):
+    ret_data = fb.display_list(name, True)
+    task = filter(lambda x: x[0] == id_task, ret_data)[0]  # extracts data for the specific task to edit  
+
+    return render_template('edit_task.html', subteam=name, task=task, date=datetime.date.today().strftime("%m/%d"))
+
+    
+"""
 deletes individual task
 """
 @app.route('/<name>/delete_task/<id_task>')
@@ -101,12 +112,12 @@ def post_tasks(name, visibility):
 """
 scheduling, checks every new day if there are overdue tasks
 """
-@sched.cron_schedule(hour=1)
+@sched.cron_schedule(hour=0)
 def check_overdue():
     fb.check_overdue()
 
 if __name__ == "__main__":
-    sched.add_cron_job(lambda: post_tasks('Business', 'visible'), hour=10, minute=24)
+    sched.add_cron_job(lambda: post_tasks('Business', 'visible'), hour=7)
     sched.start()
     app.run(debug=True)
 

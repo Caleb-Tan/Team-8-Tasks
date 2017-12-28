@@ -17,19 +17,29 @@ class Firebase_Interactor:
         task["date-added"] = datetime.date.today()
         result = Firebase_Interactor.fb.post('/'+subteam, task)
 
+    """
+    update_task() changes the status of a current task (completed or ongoing)
+    """
     def update_task(self, subteam, status, id_task):
         if status == "completed":
             Firebase_Interactor.fb.put('/'+subteam+'/'+id_task, 'completed', 1)
         elif status == "ongoing":
             Firebase_Interactor.fb.put('/'+subteam+'/'+id_task, 'completed', 0)
+    
+    """
+    edit_task() updates the information of a task
+    """
+    def edit_task(self, subteam, id_task, raw_task):
+        return
+        # Firebase_Interactor.fb.put('/'+subteam+'/'+id_task, {})
 
     def delete_task(self, subteam, id_task):
         Firebase_Interactor.fb.delete('/'+subteam, id_task)
 
     """
-    This function updates the list. It is called in every app route.
-    The boolean has_year is used to add a year to the date (used for 
-    checking overdue) or removing the year.
+    displaay_list() returns the entire list for the subteam and is called in every app route.
+    The boolean has_year is used to add a year to the date (used for checking overdue and
+    updating task) or return the data without the year.
     """
     def display_list(self, subteam, has_year):
         raw_ret_data = Firebase_Interactor.fb.get('/'+subteam, None) 
