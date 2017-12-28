@@ -126,7 +126,7 @@ if __name__ == "__main__":
     sched.add_cron_job(lambda: post_tasks('Business', 'visible'), hour=7)
 
     sched.start()
-    app.run(debug=True, port=7000)
+    app.run(debug=True, host='0.0.0.0', port=7000)
 
     
     
