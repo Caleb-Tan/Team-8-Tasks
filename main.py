@@ -47,7 +47,7 @@ def add_task(name):
 """
 updates individual task
 """
-@app.route('/<name>/update_task/<status>/<id_task>', methods=['POST'])
+@app.route('/<name>/update_task/<status>/<id_task>', methods=['POST', 'GET'])
 def update_task(name, status, id_task):
     if request.method == 'POST':
         task = ast.literal_eval(json.dumps(request.form))
