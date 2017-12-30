@@ -124,7 +124,7 @@ def check_overdue():
 
 if __name__ == "__main__":
     sched.start()
-    sched.add_cron_job(lambda: post_tasks('Business', 'visible'), hour=12, minute=22)
+    sched.add_cron_job(lambda: post_tasks('Business', 'visible'), hour=12, minute=24)
     app.run(debug=True, host='0.0.0.0', port=7000)
 
     
