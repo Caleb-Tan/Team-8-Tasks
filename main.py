@@ -123,8 +123,8 @@ def check_overdue():
     fb.check_overdue()
 
 if __name__ == "__main__":
-    sched.add_cron_job(lambda: post_tasks('Business', 'visible'), hour=8)
     sched.start()
+    sched.add_cron_job(lambda: post_tasks('Business', 'visible'), hour=12, minute=22)
     app.run(debug=True, host='0.0.0.0', port=7000)
 
     
