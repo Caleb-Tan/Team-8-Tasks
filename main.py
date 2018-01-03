@@ -5,6 +5,7 @@ from apscheduler.scheduler import Scheduler
 import datetime
 import json
 import ast
+import threading
 
 
 app = Flask(__name__) # flask app
@@ -105,7 +106,8 @@ slack interaction methods
 def display_slack_tasks():
     text = ast.literal_eval(json.dumps(request.form)).get('text')
     if text == 'show':
-        post_tasks('Business', 'visible')
+        t = threading.Thread(target=post_tasks, args=('Business', 'visible'))
+        t.start()
         return 'Success! Tasks shared to channel.'
     else:
         payload = post_tasks('Business', 'ephemeral')
@@ -124,7 +126,7 @@ def check_overdue():
 
 if __name__ == "__main__":
     sched.start()
-    sched.add_cron_job(lambda: post_tasks('Business', 'visible'), hour=8)
+    sched.add_cron_job(lambda: post_tasks('Business', 'visible'), hour=15, minute=19)
     app.run(debug=True, host='0.0.0.0', port=7000)
 
     
