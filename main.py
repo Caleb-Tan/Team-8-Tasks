@@ -106,14 +106,14 @@ slack interaction methods
 def display_slack_tasks():
     text = ast.literal_eval(json.dumps(request.form)).get('text')
     if text == 'show':
-        t = threading.Thread(target=post_tasks, args=('Business', 'visible'))
-        t.start()
+        post_tasks('Business', 'visible')
         return 'Success! Tasks shared to channel.'
     else:
         payload = post_tasks('Business', 'ephemeral')
         return payload
 
 def post_tasks(name, visibility):
+    print("test")
     ret_data = fb.display_list(name, False)
     return slack.post_tasks(ret_data, visibility)
 
@@ -126,7 +126,7 @@ def check_overdue():
 
 if __name__ == "__main__":
     sched.start()
-    sched.add_cron_job(lambda: post_tasks('Business', 'visible'), hour=15, minute=19)
+    sched.add_cron_job(lambda: post_tasks('Business', 'visible'), hour=18, minute=15)
     app.run(debug=True, host='0.0.0.0', port=7000)
 
     
