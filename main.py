@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request
 from firebase_interactor import Firebase_Interactor
 import slack_interactor as slack
-from apscheduler.scheduler import Scheduler 
 import datetime
 import json
 import ast
@@ -112,20 +111,18 @@ def display_slack_tasks():
         payload = post_tasks('Business', 'ephemeral')
         return payload
 
+"""
+post_tasks() and check_overdue() are set to run at 8:00 am and 0:00 am respectively (see scheduling.py)
+"""
 def post_tasks(name, visibility):
     print("test")
     ret_data = fb.display_list(name, False)
     return slack.post_tasks(ret_data, visibility)
 
-"""
-scheduling, checks every new day if there are overdue tasks
-"""
-@sched.cron_schedule(hour=0)
 def check_overdue():
     fb.check_overdue()
 
 if __name__ == "__main__":
-    sched.start()
     app.run(debug=True, host='0.0.0.0', port=7000)
 
     
