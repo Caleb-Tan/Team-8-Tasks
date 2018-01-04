@@ -9,7 +9,6 @@ import threading
 
 app = Flask(__name__) # flask app
 fb = Firebase_Interactor() # firebase initialization
-sched = Scheduler() # scheduler initialization
 
 """
 shows every subteam
