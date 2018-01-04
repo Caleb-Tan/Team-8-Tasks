@@ -106,7 +106,7 @@ slack interaction methods
 def display_slack_tasks():
     text = ast.literal_eval(json.dumps(request.form)).get('text')
     if text == 'show':
-        post_tasks('Business', 'visible')
+        post_tasks('Business', 'public')
         return 'Success! Tasks shared to channel.'
     else:
         payload = post_tasks('Business', 'ephemeral')

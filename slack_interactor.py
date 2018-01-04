@@ -38,7 +38,7 @@ def post_tasks(data, visibility):
         completed += "You have no completed tasks.\n"
 
     text = ongoing + overdue + completed + "\nAs always, the task app website can be found <http://server.palyrobotics.com:7000|here>."
-    if visibility == 'visible':
+    if visibility == 'public':
         payload = {'text' : text}
         results = requests.post(webhook_url, json.dumps(payload), headers=header)
     elif visibility == 'ephemeral':
