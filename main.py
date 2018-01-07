@@ -65,7 +65,7 @@ def edit_task(name, id_task):
     
     ret_data = fb.display_list(name, True)
     task = filter(lambda x: x[0] == id_task, ret_data)[0]  # extracts data for the specific task to edit  
-
+    print task
     return render_template('edit_task.html', subteam=name, task=task, date=datetime.date.today().strftime("%m/%d"))
 
     
