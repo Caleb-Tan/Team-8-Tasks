@@ -29,7 +29,6 @@ def post_tasks(data):
     task[1] - date
     """
     for task in data:   
-        print task
         if task[3] == 0:
             ongoing += task[1] + " | " + task[2] + " - " + task[4] + "\n"
             ongoing_counter += 1
