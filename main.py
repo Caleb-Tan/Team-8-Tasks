@@ -100,7 +100,7 @@ def clear_all(name, status):
 """
 slack interaction methods
 """
-@app.route('/tasks', methods=['POST'])
+@app.route('/tasks')
 def display_slack_tasks():
 
     payload = post_tasks('Business')
