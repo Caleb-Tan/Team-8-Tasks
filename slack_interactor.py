@@ -31,13 +31,13 @@ def post_tasks(data):
     for task in data:   
         print task
         if task[3] == 0:
-            ongoing += task[1] + " | " + task[2] + "\n"
+            ongoing += task[1] + " | " + task[2] + " - " + task[4] + "\n"
             ongoing_counter += 1
         if task[3] == 1:
-            completed += task[1] + " | " + task[2] + "\n"
+            completed += task[1] + " | " + task[2] + " - " + task[4] + "\n"
             completed_counter += 1
         if task[3] == 2:
-            overdue += task[1] + " | " + task[2] + "\n"
+            overdue += task[1] + " | " + task[2] + " - " + task[4] + "\n"
             overdue_counter += 1
         
     if ongoing_counter == 0:
