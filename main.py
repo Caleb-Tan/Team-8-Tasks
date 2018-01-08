@@ -62,7 +62,6 @@ returns the edit task page with the data of the task to be edited
 """
 @app.route('/<name>/edit_task/<id_task>')
 def edit_task(name, id_task):
-    
     ret_data = fb.display_list(name, True)
     task = filter(lambda x: x[0] == id_task, ret_data)[0]  # extracts data for the specific task to edit  
     print task
@@ -103,7 +102,7 @@ slack interaction methods
 @app.route('/tasks', methods=['POST'])
 def display_slack_tasks():
     payload = post_tasks('Business')
-    
+
     return payload
 
 """

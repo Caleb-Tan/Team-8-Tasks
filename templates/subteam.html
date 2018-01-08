@@ -1,165 +1,194 @@
 {% include 'navbar.html' %}
 <div class="col-sm-10 scrollable">
   <div class="row">
-    <div class="col-sm-10">
+    <div class="col-sm-6">
       <h3>{{subteam}}</h3>
     </div>
+    <!-- view task statuses -->
+    <div class="col-sm-4">
+      <ul class="nav nav-pills">
+        <li class="active">
+          <a data-toggle="pill" href="#ongoing">Ongoing</a>
+        </li>
+        <li>
+          <a data-toggle="pill" href="#overdue">Overdue</a>
+        </li>
+        <li>
+          <a data-toggle="pill" href="#completed">Completed</a>
+        </li>
+      </ul>
+    </div>
+    <!-- ////////// -->
     <div class="col-sm-2">
       <h3 class="date">{{date}}</h3>
     </div>
     <div class="col-sm-12">
       <hr>
     </div>
-    <div class="col-sm-7">
-      <div class="panel" style="height:85vh;">
-        <div class="row">
-          <div class="col-xs-9">
-            <h4 style="margin-top:6px; font-size:20px;">Ongoing</h4>
+
+    <!-- tab content -->
+    <div class="tab-content">
+
+      <div id="ongoing" class="col-sm-12 tab-pane fade in active">
+        <div class="panel" style="height:85vh; overflow-y:scroll;">
+          <div class="row">
+            <div class="col-xs-9">
+              <h4 style="margin-top:6px; font-size:20px;">Ongoing</h4>
+            </div>
+            <div class="col-xs-3">
+              <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#addTask">Add Task</button>
+            </div>
           </div>
-          <div class="col-xs-3">
-            <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#addTask">Add Task</button>
-          </div>
+          <hr style="margin-bottom:0px;">
+          <table class="table table-hover table-responsive" style="table-layout:fixed; width:100%;">
+            <tbody>
+              {% for obj in data %} {% if 1 > obj[3] %}
+              <tr>
+                <td colspan="20%" style="padding-top:21px">
+                  <p style="word-wrap:break-word !important;">{{obj[2]}}</p>
+                </td>
+                <td colspan="60%" style="padding-top:21px;">
+                  <p style="word-wrap:break-word !important;">{{obj[4]}}</p>
+                </td>
+                <td colspan="20%" style="padding-top:15px;">
+                  <p style="display:inline-block;">{{obj[1]}}</p>
+
+                  {% if obj[2] != "You're all caught up!" %}
+                  <div class="dropdown" style="width:60px; display:inline-block;">
+                    <button class="btn btn-primary dropdown-toggle edit" type="button" data-toggle="dropdown">Edit &nbsp;&nbsp;
+                      <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" style="width:200px !important;">
+                      <li>
+                        <a href="/{{subteam}}/update_task/completed/{{obj[0]}}">Mark as Completed
+                          <i class="fa fa-check-circle" aria-hidden="true"></i>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="/{{subteam}}/edit_task/{{obj[0]}}">Edit
+                          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="/{{subteam}}/delete_task/{{obj[0]}}">Delete
+                          <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endif %} {% endfor %}
+            </tbody>
+          </table>
+
         </div>
-        <hr style="margin-bottom:0px;">
-        <table class="table table-hover table-responsive" style="table-layout:fixed; width:100%;">
-          <tbody>
-            {% for obj in data %} {% if 1 > obj[3] %}
-            <tr>
-              <td colspan="70%" style="padding-top:21px;">
-                <p style="word-wrap:break-word !important;">{{obj[2]}}</p>
-              </td>
-              <td colspan="30%" style="padding-top:15px;">
-                <p style="display:inline-block;">{{obj[1]}}</p>
-
-                {% if obj[2] != "You're all caught up!" %}
-                <div class="dropdown" style="width:60px; display:inline-block;">
-                  <button class="btn btn-primary dropdown-toggle edit" type="button" data-toggle="dropdown">Edit &nbsp;&nbsp;
-                    <span class="caret"></span>
-                  </button>
-                  <ul class="dropdown-menu" style="width:200px !important;">
-                    <li>
-                      <a href="/{{subteam}}/update_task/completed/{{obj[0]}}">Mark as Completed
-                        <i class="fa fa-check-circle" aria-hidden="true"></i>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/{{subteam}}/edit_task/{{obj[0]}}">Edit
-                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/{{subteam}}/delete_task/{{obj[0]}}">Delete
-                        <i class="fa fa-trash-o" aria-hidden="true"></i>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                {% endif %}
-              </td>
-            </tr>
-            {% endif %} {% endfor %}
-          </tbody>
-        </table>
-
       </div>
-    </div>
-    <div class="col-sm-5">
-      <!-- overdue panel -->
-      <div class="panel" style="height:50vh; overflow-y: scroll;">
-        <div class="row">
-          <div class="col-sm-7">
-            <h4 style="margin-top:6px; font-size:20px;">Overdue</h4>
+      <div id="overdue" class="col-sm-12 tab-pane fade">
+        <!-- overdue panel -->
+        <div class="panel" style="height:85vh; overflow-y:scroll;">
+          <div class="row">
+            <div class="col-sm-8">
+              <h4 style="margin-top:6px; font-size:20px;">Overdue</h4>
+            </div>
+            <div class="col-sm-4">
+              <button type="button" class="btn btn-danger btn-lg clear" data-toggle="modal" data-target="#clearAllOverdue">Clear All</button>
+            </div>
           </div>
-          <div class="col-sm-5">
-            <button type="button" class="btn btn-danger btn-lg clear" data-toggle="modal" data-target="#clearAllOverdue">Clear All</button>
-          </div>
+          <hr style="margin-bottom:0px;">
+          <table class="table table-hover table-responsive" style="table-layout:fixed; width:100%;">
+            <tbody>
+              {% for obj in data %} {% if obj[3] == 2 %}
+              <tr>
+                  <td colspan="20%" style="padding-top:21px">
+                    <p style="word-wrap:break-word !important;">{{obj[2]}}</p>
+                  </td>
+                  <td colspan="60%" style="padding-top:21px;">
+                    <p style="word-wrap:break-word !important;">{{obj[4]}}</p>
+                  </td>
+                  <td colspan="20%" style="padding-top:15px;">
+                    <p style="display:inline-block;">{{obj[1]}}</p>
+                  {% if obj[2] != "You're all caught up!" %}
+                  <div class="dropdown" style="width:60px; display:inline-block;">
+                    <button class="btn btn-primary dropdown-toggle edit" type="button" data-toggle="dropdown">Edit &nbsp;&nbsp;
+                      <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu pull-left" style="width:200px !important; left: -200%;">
+                      <li>
+                        <a href="/{{subteam}}/update_task/completed/{{obj[0]}}">Mark as Completed
+                          <i class="fa fa-check-circle" aria-hidden="true"></i>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="/{{subteam}}/delete_task/{{obj[0]}}">Delete
+                          <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endif %} {% endfor %}
+            </tbody>
+          </table>
         </div>
-        <hr>
-        <table class="table table-hover table-responsive" style="table-layout:fixed; width:100%;">
-          <tbody>
-            {% for obj in data %} {% if obj[3] == 2 %}
-            <tr>
-              <td colspan="70%" style="padding-top:21px;">
-                <p style="word-wrap:break-word !important;">{{obj[2]}}</p>
-              </td>
-              <td colspan="30%" style="padding-top:15px;">
-                <p style="display:inline-block;">{{obj[1]}}</p>
-
-                {% if obj[2] != "You're all caught up!" %}
-                <div class="dropdown" style="width:60px; display:inline-block;">
-                  <button class="btn btn-primary dropdown-toggle edit" type="button" data-toggle="dropdown">Edit &nbsp;&nbsp;
-                    <span class="caret"></span>
-                  </button>
-                  <ul class="dropdown-menu pull-left" style="width:200px !important; left: -200%;">
-                    <li>
-                      <a href="/{{subteam}}/update_task/completed/{{obj[0]}}">Mark as Completed
-                        <i class="fa fa-check-circle" aria-hidden="true"></i>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/{{subteam}}/delete_task/{{obj[0]}}">Delete
-                        <i class="fa fa-trash-o" aria-hidden="true"></i>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                {% endif %}
-              </td>
-            </tr>
-            {% endif %} {% endfor %}
-          </tbody>
-        </table>
       </div>
       <!-- recently completed panel -->
-      <div class="panel" style="height:32vh; overflow-y: scroll;">
-        <div class="row">
-          <div class="col-sm-7">
-            <h4 style="margin-top:6px; font-size:20px;">Recently Completed</h4>
+      <div id="completed" class="col-sm-12 tab-pane fade">
+        <div class="panel" style="height:85vh; overflow-y:scroll;">
+          <div class="row">
+            <div class="col-sm-8">
+              <h4 style="margin-top:6px; font-size:20px;">Recently Completed</h4>
+            </div>
+            <div class="col-sm-4">
+              <button type="button" class="btn btn-danger btn-lg clear" data-toggle="modal" data-target="#clearAllCompleted">Clear All</button>
+            </div>
           </div>
-          <div class="col-sm-5">
-            <button type="button" class="btn btn-danger btn-lg clear" data-toggle="modal" data-target="#clearAllCompleted">Clear All</button>
-          </div>
-        </div>
-        <hr>
-        <table class="table table-hover table-responsive" style="table-layout:fixed; width:100%;">
-          <tbody>
-            {% for obj in data %} {% if obj[3] == 1 %}
-            <tr>
-              <td colspan="70%" style="padding-top:21px;">
-                <p style="word-wrap:break-word !important;">{{obj[2]}}</p>
-              </td>
-              <td colspan="30%" style="padding-top:15px;">
-                <p style="display:inline-block;">{{obj[1]}}</p>
+          <hr style="margin-bottom:0px;">
+          <table class="table table-hover table-responsive" style="table-layout:fixed; width:100%;">
+            <tbody>
+              {% for obj in data %} {% if obj[3] == 1 %}
+              <tr>
+                <td colspan="20%" style="padding-top:21px">
+                  <p style="word-wrap:break-word !important;">{{obj[2]}}</p>
+                </td>
+                <td colspan="60%" style="padding-top:21px;">
+                  <p style="word-wrap:break-word !important;">{{obj[4]}}</p>
+                </td>
+                <td colspan="20%" style="padding-top:15px;">
+                  <p style="display:inline-block;">{{obj[1]}}</p>
 
-                {% if obj[2] != "You're all caught up!" %}
-                <div class="dropdown" style="width:60px; display:inline-block;">
-                  <button class="btn btn-primary dropdown-toggle edit" type="button" data-toggle="dropdown">Edit &nbsp;&nbsp;
-                    <span class="caret"></span>
-                  </button>
-                  <ul class="dropdown-menu pull-left" style="width:200px !important; left: -200%;">
-                    <li>
-                      <a href="/{{subteam}}/update_task/ongoing/{{obj[0]}}">
-                        Mark as Ongoing
-                        <i class="fa fa-tasks" aria-hidden="true"></i>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/{{subteam}}/delete_task/{{obj[0]}}">Delete
-                        <i class="fa fa-trash-o" aria-hidden="true"></i>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                {% endif %}
-              </td>
-            </tr>
-            {% endif %} {% endfor %}
-          </tbody>
-        </table>
+                  {% if obj[2] != "You're all caught up!" %}
+                  <div class="dropdown" style="width:60px; display:inline-block;">
+                    <button class="btn btn-primary dropdown-toggle edit" type="button" data-toggle="dropdown">Edit &nbsp;&nbsp;
+                      <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu pull-left" style="width:200px !important; left: -200%;">
+                      <li>
+                        <a href="/{{subteam}}/update_task/ongoing/{{obj[0]}}">
+                          Mark as Ongoing
+                          <i class="fa fa-tasks" aria-hidden="true"></i>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="/{{subteam}}/delete_task/{{obj[0]}}">Delete
+                          <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endif %} {% endfor %}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
-
   <!-- add task -->
   <div class="modal fade" id="addTask" role="dialog">
     <div class="modal-dialog">
@@ -183,6 +212,13 @@
               <label class="control-label col-sm-2" for="task">Task:</label>
               <div class="col-sm-9">
                 <input type="text" style="font-size:14px;" class="form-control" name="text" placeholder="Enter Task" required>
+              </div>
+              <div class="col-sm-1"></div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="assignment">Assign To:</label>
+              <div class="col-sm-9">
+                <input type="text" style="font-size:14px;" class="form-control" name="assignment" placeholder="Assign To" required>
               </div>
               <div class="col-sm-1"></div>
             </div>

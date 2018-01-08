@@ -4,8 +4,9 @@ import ast
 import json
 import datetime
 
+fb = firebase.FirebaseApplication('https://inventory-cade0.firebaseio.com', None)
+
 class Firebase_Interactor:
-    fb = firebase.FirebaseApplication('https://inventory-cade0.firebaseio.com', None)
 
     def add_task(self, subteam, raw_task):
         task = {}
@@ -14,8 +15,8 @@ class Firebase_Interactor:
             y = raw_task[key].encode("ascii")
             task[x] = y
         task["completed"] = 0
-        task["date-added"] = datetime.date.today()
-        result = Firebase_Interactor.fb.post('/'+subteam, task)
+
+        result = fb.post('/'+subteam, task)
 
     """
     update_task() changes the status of a current task (completed or ongoing)
@@ -23,21 +24,17 @@ class Firebase_Interactor:
     """
     def update_task(self, subteam, status, id_task, data=None):
         if status == "completed":
-            Firebase_Interactor.fb.put('/'+subteam+'/'+id_task, 'completed', 1)
+            fb.put('/'+subteam+'/'+id_task, 'completed', 1)
         elif status == "ongoing":
-            Firebase_Interactor.fb.put('/'+subteam+'/'+id_task, 'completed', 0)
+            fb.put('/'+subteam+'/'+id_task, 'completed', 0)
         elif status == "edited":
-            Firebase_Interactor.fb.put('/'+subteam+'/'+id_task, 'date', data.get('date'))
-            Firebase_Interactor.fb.put('/'+subteam+'/'+id_task, 'text', data.get('text'))
-    
-    """
-    edit_task() updates the information of a task
-    """
-    def edit_task(self, subteam, id_task, raw_task):
-        Firebase_Interactor.fb.put('/'+subteam+'/'+id_task, {})
+            fb.put('/'+subteam+'/'+id_task, 'assignment', str (data.get('assignment')))
+            fb.put('/'+subteam+'/'+id_task, 'date', data.get('date'))
+            fb.put('/'+subteam+'/'+id_task, 'text', data.get('text'))
+
 
     def delete_task(self, subteam, id_task):
-        Firebase_Interactor.fb.delete('/'+subteam, id_task)
+        fb.delete('/'+subteam, id_task)
 
     """
     displaay_list() returns the entire list for the subteam and is called in every app route.
@@ -45,7 +42,7 @@ class Firebase_Interactor:
     updating task) or return the data without the year.
     """
     def display_list(self, subteam, has_year):
-        raw_ret_data = Firebase_Interactor.fb.get('/'+subteam, None) 
+        raw_ret_data = fb.get('/'+subteam, None) 
         ret_data = []
         task_ongoing = False
 
@@ -70,12 +67,12 @@ class Firebase_Interactor:
         return ast.literal_eval(json.dumps(ret_data))
 
     def check_overdue(self):
-        all_ret_data = Firebase_Interactor.fb.get('/', None)
+        all_ret_data = fb.get('/', None)
         yesterday_date = (datetime.date.today() - datetime.timedelta(days=1)).strftime("%Y-%m-%d")        
 
         for key in all_ret_data.keys():
             ret_data = self.display_list(key, True)
             for datalist in ret_data:
                 if yesterday_date >= datalist[1] and datalist[3] == 0:   # if due date is equal to yesterday's date, mark as overdue (2)
-                    Firebase_Interactor.fb.put('/'+key+'/'+datalist[0], 'completed', 2)
+                    fb.put('/'+key+'/'+datalist[0], 'completed', 2)
                 

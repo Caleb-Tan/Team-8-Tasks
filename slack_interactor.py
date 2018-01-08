@@ -2,12 +2,19 @@ from slackclient import SlackClient
 from pyee import EventEmitter
 import requests
 import json
+import time
 
-# urls and header
-webhook_url = 'https://hooks.slack.com/services/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' # private test channel
-webhook_url_business = 'https://hooks.slack.com/services/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' # business channel
+
+# header
 header = {'content-type': 'application/json'}
-# 
+# tokens
+SLACK_VERIFICATION_TOKEN = 'RubANxonQSPFjp0u125Clrzi'
+SLACK_BOT_TOKEN = 'xoxb-295366353890-BS36I6qZm2QI77ZOt166AhGl'
+slack_client = SlackClient(SLACK_BOT_TOKEN)
+
+"""
+post_tasks() returns a payload of text that is then returned as an ephemeral message
+"""
 def post_tasks(data):
     ongoing = "*Ongoing:*\n"
     overdue = "*Overdue:*\n"
@@ -22,6 +29,7 @@ def post_tasks(data):
     task[1] - date
     """
     for task in data:   
+        print task
         if task[3] == 0:
             ongoing += task[1] + " | " + task[2] + "\n"
             ongoing_counter += 1
@@ -43,3 +51,8 @@ def post_tasks(data):
 
     return text
 
+
+
+"""
+handle_message() handles dm messages that are sent to the bot
+"""
