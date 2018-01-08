@@ -100,19 +100,18 @@ def clear_all(name, status):
 """
 slack interaction methods
 """
-@app.route('/tasks')
+@app.route('/tasks', methods=['POST'])
 def display_slack_tasks():
-
     payload = post_tasks('Business')
+    
     return payload
 
 """
 post_tasks() and check_overdue() are set to run at 8:00 am and 0:00 am respectively (see scheduling.py)
 """
-def post_tasks(name, visibility):
-    print("test")
+def post_tasks(name):
     ret_data = fb.display_list(name, False)
-    return slack.post_tasks(ret_data, visibility)
+    return slack.post_tasks(ret_data)
 
 def check_overdue():
     fb.check_overdue()
