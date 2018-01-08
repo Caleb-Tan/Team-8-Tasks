@@ -12,6 +12,8 @@ The app runs [Python 2.7.9+](https://www.python.org/downloads/release/python-279
 pip install flask
 pip install requests==1.1.0
 pip install python-firebase
-pip install apscheduler==2.1.2 
+pip install scheduler
+pip install pyee
+pip install slackclient
 ```
 

@@ -1,3 +1,5 @@
+from slackclient import SlackClient
+from pyee import EventEmitter
 import requests
 import json
 
@@ -5,8 +7,8 @@ import json
 webhook_url = 'https://hooks.slack.com/services/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' # private test channel
 webhook_url_business = 'https://hooks.slack.com/services/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' # business channel
 header = {'content-type': 'application/json'}
-
-def post_tasks(data, visibility):
+# 
+def post_tasks(data):
     ongoing = "*Ongoing:*\n"
     overdue = "*Overdue:*\n"
     completed = "*Completed:*\n"
@@ -38,9 +40,6 @@ def post_tasks(data, visibility):
         completed += "You have no completed tasks.\n"
 
     text = ongoing + overdue + completed + "\nAs always, the task app website can be found <http://server.palyrobotics.com:7000|here>."
-    if visibility == 'public':
-        payload = {'text' : text}
-        results = requests.post(webhook_url, json.dumps(payload), headers=header)
-    elif visibility == 'ephemeral':
-        return text
+
+    return text
 
