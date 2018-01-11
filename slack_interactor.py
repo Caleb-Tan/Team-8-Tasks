@@ -25,10 +25,9 @@ def handle_event(event_data):
     channel = message.get('channel')
     msg = message.get('text').lower()
     userid = message.get('user')
-    username = convert_unicode(sc.api_call('users.info', user=userid)).get('user').get('name')
+    username = convert_unicode(sc.api_call('users.info', user=userid)).get('user').get('profile').get('display_name')
     text = None
 
-    print message
     if "tasks" in msg or "task" in msg:
         ret_data = fb.display_list('Business', False)
         filtered_ret_data = return_tasks(filter(lambda x:x[2].strip()==username, ret_data))
