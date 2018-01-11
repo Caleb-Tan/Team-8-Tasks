@@ -106,8 +106,9 @@ slack interaction methods
 @app.route('/tasks', methods=['POST'])
 def display_slack_tasks():
     ret_data = fb.display_list('Business', False)
-    text = ast.literal_eval(json.dumps(request.form)).get('text')
-    print text
+    user = ast.literal_eval(json.dumps(request.form)).get('text')
+    ret_data = filter(lambda x:x[2]==user, ret_data)
+    
     payload = slack.return_tasks(ret_data)
     return payload
 

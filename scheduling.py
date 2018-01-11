@@ -7,11 +7,10 @@ import datetime
 
 sys.dont_write_bytecode = True
 
-
 def remind_tasks():
     now = datetime.datetime.now()
     if now.day % 2 == 0:
-        slack.remind_tasks()
+        slack.remind_tasks('Business')
     
 def check_overdue():
     main.check_overdue()

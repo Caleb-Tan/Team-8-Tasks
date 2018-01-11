@@ -78,8 +78,8 @@ def return_tasks(data):
 
     return text
 
-def remind_tasks():
-    ret_data = fb.display_list('Business', False)
+def remind_tasks(subteam):
+    ret_data = fb.display_list(subteam, False)
     members = convert_unicode(sc.api_call('users.list')).get('members')
     users = []
     for task in ret_data:
@@ -91,8 +91,6 @@ def remind_tasks():
                 dm_id = convert_unicode(sc.api_call('im.open', user=member.get('id'), return_im=True)).get('channel').get('id')
                 text = "Hi! Here are your tasks for today:\n" + return_tasks(filter(lambda x:x[2]==user, ret_data))
                 sc.api_call('chat.postMessage', channel=dm_id, text=text, as_user=True)
-
-
     
 
 def convert_unicode(input):
