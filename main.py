@@ -4,11 +4,10 @@ import slack_interactor as slack
 import datetime
 import json
 import ast
-import threading
-
 
 app = Flask(__name__) # flask app
 fb = Firebase_Interactor() # firebase initialization
+SLACK_VERIFICATION_TOKEN = 'RubANxonQSPFjp0u125Clrzi'
 
 """
 shows every subteam
@@ -105,12 +104,25 @@ def display_slack_tasks():
 
     return payload
 
+@app.route('/user_request', methods=['POST'])
+def get_request():
+    event_data = None
+    try:
+        event_data = ast.literal_eval(request.data)
+    except ValueError:
+        pass
+
+    if event_data != None and event_data.get('token') == SLACK_VERIFICATION_TOKEN and event_data.get('event').get('bot_id') == None:
+        slack.handle_event(event_data)
+    
+    return ""
+
 """
 post_tasks() and check_overdue() are set to run at 8:00 am and 0:00 am respectively (see scheduling.py)
 """
 def post_tasks(name):
     ret_data = fb.display_list(name, False)
-    return slack.post_tasks(ret_data)
+    return slack.return_tasks(ret_data)
 
 def check_overdue():
     fb.check_overdue()

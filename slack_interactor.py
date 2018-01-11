@@ -1,4 +1,5 @@
 from slackclient import SlackClient
+from firebase_interactor import Firebase_Interactor
 from pyee import EventEmitter
 import requests
 import json
@@ -7,15 +8,39 @@ import time
 
 # header
 header = {'content-type': 'application/json'}
-# tokens
-SLACK_VERIFICATION_TOKEN = 'RubANxonQSPFjp0u125Clrzi'
+# tokens 
 SLACK_BOT_TOKEN = 'xoxb-295366353890-BS36I6qZm2QI77ZOt166AhGl'
-slack_client = SlackClient(SLACK_BOT_TOKEN)
+sc = SlackClient(SLACK_BOT_TOKEN)
+fb = Firebase_Interactor()
 
-"""
-post_tasks() returns a payload of text that is then returned as an ephemeral message
-"""
-def post_tasks(data):
+def handle_event(event_data):
+    """
+    handle_event() handles dm messages that are sent to the bot
+    """
+    # define variable of data
+    message = event_data.get('event')
+    channel = message.get('channel')
+    msg = message.get('text')
+    userid = message.get('user')
+    username = convert_unicode(sc.api_call('users.info', user=userid)).get('user').get('name')
+    text = None
+
+    if "tasks" in msg or "task" in msg:
+        text = "These are your tasks:"
+        ret_data = fb.display_list('Business', False)
+        filtered_ret_data = return_tasks(filter(lambda x:x[2]==username, ret_data))
+        text = filtered_ret_data
+    elif "hello" in msg or "hi" in msg or "hey" in msg:
+        text = "Hello <@" + userid + ">! What's up?"
+    else:
+        text = 'Sorry I do not know what that command means. Try "tasks" to list your tasks.'
+
+    sc.api_call('chat.postMessage', channel=channel, text=text, as_user=True)
+
+def return_tasks(data):
+    """
+    post_tasks() returns a payload of text that is then returned as an ephemeral message
+    """
     ongoing = "*Ongoing:*\n"
     overdue = "*Overdue:*\n"
     completed = "*Completed:*\n"
@@ -50,8 +75,12 @@ def post_tasks(data):
 
     return text
 
-
-
-"""
-handle_message() handles dm messages that are sent to the bot
-"""
+def convert_unicode(input):
+    if isinstance(input, dict):
+        return {convert_unicode(key): convert_unicode(value) for key, value in input.iteritems()}
+    elif isinstance(input, list):
+        return [convert_unicode(element) for element in input]
+    elif isinstance(input, unicode):
+        return input.encode('utf-8')
+    else:
+        return input

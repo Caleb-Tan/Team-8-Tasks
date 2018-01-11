@@ -56,7 +56,7 @@ class Firebase_Interactor:
             ret_data.append(temp)
 
         if len(ret_data) > 1 and task_ongoing: # removes default message if there is at least one task present, and a task ongoing
-            ret_data = filter(lambda x:x[0]!='x',ret_data)
+            ret_data = filter(lambda x:x[0]!='x', ret_data)
 
         ret_data = sorted(ret_data, key=itemgetter(1)) # sort by date
         
