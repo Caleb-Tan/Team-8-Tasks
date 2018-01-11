@@ -7,8 +7,6 @@ import datetime
 
 sys.dont_write_bytecode = True
 
-fb = Firebase_Interactor()
-
 
 def remind_tasks():
     now = datetime.datetime.now()
