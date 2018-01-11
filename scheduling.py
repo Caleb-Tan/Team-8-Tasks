@@ -1,11 +1,15 @@
 import main as main
+from firebase_interactor import Firebase_Interactor
+import slack_interactor as slack
 import schedule
 import time
+import pprint
 
+fb = Firebase_Interactor()
 
-def post_tasks():
-    main.post_tasks('Business', 'public')
-
+def remind_tasks():
+    ret_data = fb.display_list('Business', False)
+    pprint ret_data
 def check_overdue():
     main.check_overdue()
     
