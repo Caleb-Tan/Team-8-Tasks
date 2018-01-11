@@ -4,6 +4,9 @@ import slack_interactor as slack
 import datetime
 import json
 import ast
+import sys
+
+sys.dont_write_bytecode = True
 
 app = Flask(__name__) # flask app
 fb = Firebase_Interactor() # firebase initialization

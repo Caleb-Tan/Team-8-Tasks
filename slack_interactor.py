@@ -4,6 +4,9 @@ from pyee import EventEmitter
 import requests
 import json
 import time
+import sys
+
+sys.dont_write_bytecode = True
 
 
 # header
@@ -20,12 +23,12 @@ def handle_event(event_data):
     # define variable of data
     message = event_data.get('event')
     channel = message.get('channel')
-    msg = message.get('text')
+    msg = message.get('text').lower()
     userid = message.get('user')
     username = convert_unicode(sc.api_call('users.info', user=userid)).get('user').get('name')
     text = None
 
-    if "tasks" in msg or "task" in msg or "Tasks" in msg or "Task" in msg:
+    if "tasks" in msg or "task" in msg:
         text = "These are your tasks:"
         ret_data = fb.display_list('Business', False)
         filtered_ret_data = return_tasks(filter(lambda x:x[2]==username, ret_data))
@@ -75,6 +78,23 @@ def return_tasks(data):
 
     return text
 
+def remind_tasks():
+    ret_data = fb.display_list('Business', False)
+    members = convert_unicode(sc.api_call('users.list')).get('members')
+    users = []
+    for task in ret_data:
+        users.append(task[2].strip())
+    
+    for user in set(users):
+        for member in members:
+            if member.get('profile').get('display_name') == user:
+                dm_id = convert_unicode(sc.api_call('im.open', user=member.get('id'), return_im=True)).get('channel').get('id')
+                text = "Hi! Here are your tasks for today:\n" + return_tasks(filter(lambda x:x[2]==user, ret_data))
+                sc.api_call('chat.postMessage', channel=dm_id, text=text, as_user=True)
+
+
+    
+
 def convert_unicode(input):
     if isinstance(input, dict):
         return {convert_unicode(key): convert_unicode(value) for key, value in input.iteritems()}
@@ -84,3 +104,4 @@ def convert_unicode(input):
         return input.encode('utf-8')
     else:
         return input
+

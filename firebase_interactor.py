@@ -3,6 +3,9 @@ from operator import itemgetter
 import ast
 import json
 import datetime
+import sys
+
+sys.dont_write_bytecode = True
 
 fb = firebase.FirebaseApplication('https://inventory-cade0.firebaseio.com', None)
 
