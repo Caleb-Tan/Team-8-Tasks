@@ -109,6 +109,8 @@ def display_slack_tasks():
     user = ast.literal_eval(json.dumps(request.form)).get('text')
     if user != "":
         ret_data = filter(lambda x:x[2]==user, ret_data)
+
+    print ret_data    
     
     payload = slack.return_tasks(ret_data)
     return payload
