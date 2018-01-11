@@ -7,7 +7,7 @@ import ast
 import sys
 import urllib3
 
-sys.dont_write_bytecode = True
+sys.dont_write_bytecode = True  
 urllib3.disable_warnings()
 
 app = Flask(__name__) # flask app
@@ -106,7 +106,8 @@ slack interaction methods
 @app.route('/tasks', methods=['POST'])
 def display_slack_tasks():
     ret_data = fb.display_list('Business', False)
-    print request.data
+    text = ast.literal_eval(json.dumps(request.form)).get('text')
+    print text
     payload = slack.return_tasks(ret_data)
     return payload
 
