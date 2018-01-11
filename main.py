@@ -39,7 +39,7 @@ adds a task
 @app.route('/<name>/add_task', methods=['POST'])
 def add_task(name):
     if request.method == 'POST':
-        task = request.form
+        task = request.data
         fb.add_task(name, task) 
     
     ret_data = fb.display_list(name, False)
