@@ -5,8 +5,10 @@ import datetime
 import json
 import ast
 import sys
+import urllib3
 
 sys.dont_write_bytecode = True
+urllib3.disable_warnings()
 
 app = Flask(__name__) # flask app
 fb = Firebase_Interactor() # firebase initialization
@@ -39,7 +41,7 @@ adds a task
 @app.route('/<name>/add_task', methods=['POST'])
 def add_task(name):
     if request.method == 'POST':
-        task = request.data
+        task = request.form
         fb.add_task(name, task) 
     
     ret_data = fb.display_list(name, False)
