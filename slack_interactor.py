@@ -29,9 +29,9 @@ def handle_event(event_data):
     text = None
 
     if "tasks" in msg or "task" in msg:
-        text = "These are your tasks:"
         ret_data = fb.display_list('Business', False)
         filtered_ret_data = return_tasks(filter(lambda x:x[2].strip()==username, ret_data))
+        print filtered_ret_data
         text = filtered_ret_data
     elif "hello" in msg or "hi" in msg or "hey" in msg:
         text = "Hello <@" + userid + ">! What's up?"
