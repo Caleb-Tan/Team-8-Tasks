@@ -34,6 +34,8 @@ def handle_event(event_data):
         text = filtered_ret_data
     elif "hello" in msg or "hi" in msg or "hey" in msg:
         text = "Hello <@" + userid + ">! What's up?"
+    elif "no u" in msg:
+        text = "no u"
     else:
         text = 'Sorry I do not know what that command means. Try "tasks" to list your tasks.'
 
