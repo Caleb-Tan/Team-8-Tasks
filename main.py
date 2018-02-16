@@ -14,17 +14,18 @@ app = Flask(__name__) # flask app
 fb = Firebase_Interactor() # firebase initialization
 SLACK_VERIFICATION_TOKEN = 'RubANxonQSPFjp0u125Clrzi'
 
+
 """
 shows every subteam
 """
 @app.route('/')
 def list_subteams():
-    subteam_list = ['Design', 'Build', 'Business', 'Art']
-    management_list = {'Lab':'Vyomika Gupta', 'Pit':'Lawrence Chang', 'Treasury':'Amy Lin', 'Competition':'Jeffery Yu'}
-    specops_list = ['Drive Team', 'Strategy and Scouting', 'Zero Robotics', 'VEX']
-    admin_list = {'Team Captain': 'Devin Ardeshna', 'Assistant Captain': 'Annalee Soohoo', 'Project Manager': 'Eli Zucker', 'Strategic Director': 'Simran Pujji'}
+    subteam_list = ['Business']
+    # management_list = {'Lab':'Vyomika Gupta', 'Pit':'Lawrence Chang', 'Treasury':'Amy Lin', 'Competition':'Jeffery Yu'}
+    # specops_list = ['Drive Team', 'Strategy and Scouting', 'Zero Robotics', 'VEX']
+    # admin_list = {'Team Captain': 'Devin Ardeshna', 'Assistant Captain': 'Annalee Soohoo', 'Project Manager': 'Eli Zucker', 'Strategic Director': 'Simran Pujji'}
     
-    return render_template('home.html', subteams=subteam_list, management=management_list, spec_ops=specops_list, admin=admin_list, date=datetime.date.today().strftime("%m/%d"))
+    return render_template('home.html', subteams=subteam_list, date=datetime.date.today().strftime("%m/%d"))
 
 """
 called upon clicking on a subteam, displays tasks
