@@ -108,7 +108,7 @@ def display_slack_tasks():
     ret_data = fb.display_list('Business', False)
     user = ast.literal_eval(json.dumps(request.form)).get('text')
     if user != "":
-        ret_data = filter(lambda x:user in [names.strip(' ') for names in x[2].split(",")], ret_data) # splits people by commas, strips spaces from each name, then filters by if user is in array of names
+        ret_data = filter(lambda x:user in [names.strip() for names in x[2].split(",")], ret_data) # splits people by commas, strips spaces from each name, then filters by if user is in array of names
     
     payload = slack.return_tasks(ret_data)
     return payload
