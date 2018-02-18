@@ -89,8 +89,9 @@ def remind_tasks(subteam):
     for user in set(users):
         for member in members:
             if member.get('profile').get('display_name') == user:
+                users_tasks = return_tasks(filter(lambda x:username in [names.strip(' ') for names in x[2].split(",")], ret_data))
                 dm_id = convert_unicode(sc.api_call('im.open', user=member.get('id'), return_im=True)).get('channel').get('id')
-                text = "Hi! Here are your tasks for today:\n" + return_tasks(filter(lambda x:x[2]==user, ret_data))
+                text = "Hi! Here are your tasks for today:\n" + users_tasks
                 sc.api_call('chat.postMessage', channel=dm_id, text=text, as_user=True)
     
 
