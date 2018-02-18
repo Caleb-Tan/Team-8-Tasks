@@ -112,7 +112,7 @@ def display_slack_tasks():
     
     tasks = "Click <http://server.palyrobotics.com:7000|here> to go to the Task Website\n" + slack.return_tasks(ret_data)
     completed_tasks = slack.return_tasks(ret_data, 'completed')
-    return jsonify({'text': tasks, 'attachments': [{'text': completed_tasks}]})
+    return jsonify({'text': tasks, 'attachments': [{'text': completed_tasks, 'color': '#03572C'}]})
 
 @app.route('/user_request', methods=['POST'])
 def get_request():
