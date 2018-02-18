@@ -99,11 +99,14 @@ def remind_tasks(subteam):
     for user in set(users):
         for member in members:
             if member.get('profile').get('display_name') == user:
-                users_tasks = return_tasks(filter(lambda x:user in [names.strip() for names in x[2].split(',')], ret_data))
+                users_tasks = filter(lambda x:user in [names.strip() for names in x[2].split(',')], ret_data)
+                ongoing_tasks = return_tasks(users_tasks, 'ongoing')
+                overdue_tasks = return_tasks(users_tasks, 'overdue')
+                completed_tasks = return_tasks(users_tasks, 'completed')
                 dm_id = convert_unicode(sc.api_call('im.open', user=member.get('id'), return_im=True)).get('channel').get('id')
-                text = "Hi! Here are your tasks for today:\n" + users_tasks
-                sc.api_call('chat.postMessage', channel=dm_id, text=text, as_user=True)
-    
+                text = "Hi! Here are your tasks for today.\n Click <http://server.palyrobotics.com:7000|here> to go to the Task Website\n"
+                
+                sc.api_call('chat.postMessage', channel=dm_id, text=text, as_user=True, attachments=[{'text': ongoing_tasks, 'color': '#03572C'}, {'text': overdue_tasks, 'color': '#ff6666'}, {'text': completed_tasks}])
 
 def convert_unicode(input):
     if isinstance(input, dict):
