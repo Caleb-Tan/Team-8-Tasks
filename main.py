@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 from firebase_interactor import Firebase_Interactor
 import slack_interactor as slack
 import datetime
@@ -110,8 +110,9 @@ def display_slack_tasks():
     if user != "":
         ret_data = filter(lambda x:user in [names.strip() for names in x[2].split(",")], ret_data) # splits people by commas, strips spaces from each name, then filters by if user is in array of names
     
-    payload = slack.return_tasks(ret_data)
-    return payload
+    tasks = "Click <http://server.palyrobotics.com:7000|here> to go to the Task Website\n" + slack.return_tasks(ret_data)
+    completed_tasks = slack.return_tasks(ret_data, 'completed')
+    return jsonify({'text': tasks, 'attachments': [{'text': completed_tasks}]})
 
 @app.route('/user_request', methods=['POST'])
 def get_request():

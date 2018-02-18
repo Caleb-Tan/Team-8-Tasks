@@ -41,7 +41,7 @@ def handle_event(event_data):
 
     sc.api_call('chat.postMessage', channel=channel, text=text, as_user=True)
 
-def return_tasks(data):
+def return_tasks(data, task_type=None):
     """
     post_tasks() returns a payload of text that is then returned as an ephemeral message
     """
@@ -53,8 +53,9 @@ def return_tasks(data):
     completed_counter = 0
 
     """
+    task[4] - task
     task[3] - status
-    task[2] - text
+    task[2] - assignment
     task[1] - date
     """
     for task in data:   
@@ -75,9 +76,12 @@ def return_tasks(data):
     if completed_counter == 0:
         completed += "You have no completed tasks.\n"
 
-    text = ongoing + overdue + completed + "\nAs always, the task app website can be found <http://server.palyrobotics.com:7000|here>."
+    if task_type != 'completed':
+        text = ongoing + overdue
+        return text
+    else:
+        return completed
 
-    return text
 
 def remind_tasks(subteam):
     ret_data = fb.display_list(subteam, False)
