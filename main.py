@@ -110,9 +110,11 @@ def display_slack_tasks():
     if user != "":
         ret_data = filter(lambda x:user in [names.strip() for names in x[2].split(",")], ret_data) # splits people by commas, strips spaces from each name, then filters by if user is in array of names
     
-    tasks = "Click <http://server.palyrobotics.com:7000|here> to go to the Task Website\n" + slack.return_tasks(ret_data)
+    tasks = "Click <http://server.palyrobotics.com:7000|here> to go to the Task Website\n"
+    ongoing_tasks = slack.return_tasks(ret_data, 'ongoing')
+    overdue_tasks = slack.return_tasks(ret_data, 'overdue')
     completed_tasks = slack.return_tasks(ret_data, 'completed')
-    return jsonify({'text': tasks, 'attachments': [{'text': completed_tasks, 'color': '#03572C'}]})
+    return jsonify({'text': tasks, 'attachments': [{'text': ongoing_tasks, 'color': '#03572C'}, {'text': overdue_tasks, 'color': '#ff6666'}, {'text': completed_tasks}]})
 
 @app.route('/user_request', methods=['POST'])
 def get_request():

@@ -79,11 +79,12 @@ def return_tasks(data, task_type=None):
     if completed_counter == 0:
         completed += "You have no completed tasks.\n"
 
-    if task_type != 'completed':
-        text = ongoing + overdue
-        return text
-    else:
+    if task_type == 'completed':
         return completed
+    elif task_type == 'ongoing':
+        return ongoing
+    elif task_type == 'overdue':
+        return overdue
 
 
 def remind_tasks(subteam):
