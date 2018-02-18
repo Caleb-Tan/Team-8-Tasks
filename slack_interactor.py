@@ -31,7 +31,7 @@ def handle_event(event_data):
     if "tasks" in msg or "task" in msg:
         ret_data = fb.display_list('Business', False)
         ret_data = filter(lambda x:username in [names.strip() for names in x[2].split(',')], ret_data)
-        tasks = "Click <http://server.palyrobotics.com:7000|here> to go to the Task Website\n" + "return_tasks(ret_data)
+        tasks = "Click <http://server.palyrobotics.com:7000|here> to go to the Task Website\n" + return_tasks(ret_data)
         completed_tasks = return_tasks(ret_data, 'completed')
         sc.api_call('chat.postMessage', channel=channel, text=tasks, as_user=True, attachments=[{'text': completed_tasks}])
         return
