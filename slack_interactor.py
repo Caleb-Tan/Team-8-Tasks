@@ -31,9 +31,11 @@ def handle_event(event_data):
     if "tasks" in msg or "task" in msg:
         ret_data = fb.display_list('Business', False)
         ret_data = filter(lambda x:username in [names.strip() for names in x[2].split(',')], ret_data)
-        tasks = "Click <http://server.palyrobotics.com:7000|here> to go to the Task Website\n" + return_tasks(ret_data)
+        text = "Click <http://server.palyrobotics.com:7000|here> to go to the Task Website\n"
+        ongoing_tasks = return_tasks(ret_data, 'ongoing')
+        overdue_tasks = return_tasks(ret_data, 'overdue')
         completed_tasks = return_tasks(ret_data, 'completed')
-        sc.api_call('chat.postMessage', channel=channel, text=tasks, as_user=True, attachments=[{'text': completed_tasks}])
+        sc.api_call('chat.postMessage', channel=channel, text=text, as_user=True, attachments=[{'text': ongoing_tasks, 'color': '#03572C'}, {'text': overdue_tasks, 'color': '#ff6666'}, {'text': completed_tasks}])
         return
     elif "hello" in msg or "hi" in msg or "hey" in msg:
         text = "Hello <@" + userid + ">! What's up?"
@@ -44,7 +46,7 @@ def handle_event(event_data):
 
     sc.api_call('chat.postMessage', channel=channel, text=text, as_user=True)
 
-def return_tasks(data, task_type=None):
+def return_tasks(data, task_type):
     """
     post_tasks() returns a payload of text that is then returned as an ephemeral message
     """
