@@ -16,7 +16,7 @@ def check_overdue():
     main.check_overdue()
     
 schedule.every().day.at("0:00").do(check_overdue)
-schedule.every().day.at("8:00").do(remind_tasks)
+schedule.every().day.at("8:30").do(remind_tasks)
 
 while 1:
     schedule.run_pending()
