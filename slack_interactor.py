@@ -35,7 +35,7 @@ def handle_event(event_data):
         ongoing_tasks = return_tasks(ret_data, 'ongoing')
         overdue_tasks = return_tasks(ret_data, 'overdue')
         completed_tasks = return_tasks(ret_data, 'completed')
-        sc.api_call('chat.postMessage', channel=channel, text=text, as_user=True, attachments=[{'text': ongoing_tasks, 'color': '#03572C'}, {'text': overdue_tasks, 'color': '#ff6666'}, {'text': completed_tasks}])
+        sc.api_call('chat.postMessage', channel=channel, text=text, as_user=True, attachments=[{'text': ongoing_tasks, 'mrkdwn_in': ["text"], 'color': '#03572C'}, {'text': overdue_tasks, 'mrkdwn_in': ["text"], 'color': '#ff6666'}, {'text': completed_tasks, 'mrkdwn_in': ["text"]}])
         return
     elif "hello" in msg or "hi" in msg or "hey" in msg:
         text = "Hello <@" + userid + ">! What's up?"
@@ -95,7 +95,7 @@ def remind_tasks(subteam):
     users = []
     for task in ret_data:
         users.extend([names.strip() for names in task[2].split(',')])
-    
+
     for user in set(users):
         for member in members:
             if member.get('profile').get('display_name') == user:
@@ -106,7 +106,7 @@ def remind_tasks(subteam):
                 dm_id = convert_unicode(sc.api_call('im.open', user=member.get('id'), return_im=True)).get('channel').get('id')
                 text = "Hi! Here are your tasks for today.\n Click <http://server.palyrobotics.com:7000|here> to go to the Task Website\n"
                 
-                sc.api_call('chat.postMessage', channel=dm_id, text=text, as_user=True, attachments=[{'text': ongoing_tasks, 'color': '#03572C'}, {'text': overdue_tasks, 'color': '#ff6666'}, {'text': completed_tasks}])
+                sc.api_call('chat.postMessage', channel=dm_id, text=text, as_user=True, attachments=[{'text': ongoing_tasks, 'mrkdwn_in': ["text"], 'color': '#03572C'}, {'text': overdue_tasks, 'mrkdwn_in': ["text"], 'color': '#ff6666'}, {'text': completed_tasks, 'mrkdwn_in': ["text"]}])
 
 def convert_unicode(input):
     if isinstance(input, dict):
