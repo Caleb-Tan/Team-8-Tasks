@@ -40,7 +40,7 @@ class Firebase_Interactor:
         fb.delete('/'+subteam, id_task)
 
     """
-    displaay_list() returns the entire list for the subteam and is called in every app route.
+    display_list() returns the entire list for the subteam and is called in every app route.
     The boolean has_year is used to add a year to the date (used for checking overdue and
     updating task) or return the data without the year.
     """
