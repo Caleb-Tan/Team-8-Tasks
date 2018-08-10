@@ -21,6 +21,19 @@
       </a>
     </div>
     {% endfor %}
+    <div class="col-sm-12">
+      <hr>
+    </div>
+    {% for admin, name in admins.items() %}
+    <div class="col-sm-3">
+      <a href="/admin/{{admin}}">
+        <div class="panel subteam">
+          <h4>{{name}}</h4>
+          <small>{{admin}}</small>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
   </div>
   
 </div>

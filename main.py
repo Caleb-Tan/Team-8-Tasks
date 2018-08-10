@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, Response
 from firebase_interactor import Firebase_Interactor
+from functools import wraps
 import slack_interactor as slack
 import datetime
 import json
@@ -15,17 +16,41 @@ fb = Firebase_Interactor() # firebase initialization
 SLACK_VERIFICATION_TOKEN = 'RubANxonQSPFjp0u125Clrzi'
 
 
+def check_auth(username, password):
+    """This function is called to check if a username /
+    password combination is valid.
+    """
+    return username == 'jxu' and password == 'jxuteam8'
+
+
+def authenticate():
+    """Sends a 401 response that enables basic auth"""
+    return Response(
+    'Could not verify your access level for that URL.\n'
+    'You have to login with proper credentials', 401,
+    {'WWW-Authenticate': 'Basic realm="Login Required"'})
+
+def requires_auth(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        auth = request.authorization
+        if not auth or not check_auth(auth.username, auth.password):
+            return authenticate()
+        return f(*args, **kwargs)
+    return decorated
+
 """
 shows every subteam
 """
 @app.route('/')
 def list_subteams():
-    subteam_list = ['Business', 'Art']
+    subteam_list = ['Business']
     # management_list = {'Lab':'Vyomika Gupta', 'Pit':'Lawrence Chang', 'Treasury':'Amy Lin', 'Competition':'Jeffery Yu'}
     # specops_list = ['Drive Team', 'Strategy and Scouting', 'Zero Robotics', 'VEX']
-    # admin_list = {'Team Captain': 'Devin Ardeshna', 'Assistant Captain': 'Annalee Soohoo', 'Project Manager': 'Eli Zucker', 'Strategic Director': 'Simran Pujji'}
+    # admin_list = {'Team Captain': 'Jennifer Xu', 'Assistant Captain': 'Annalee Soohoo', 'Project Manager': 'Eli Zucker'}
+    admin_list = {'Team Captain': 'Jennifer Xu'}
     
-    return render_template('home.html', subteams=subteam_list, date=datetime.date.today().strftime("%m/%d"))
+    return render_template('home.html', subteams=subteam_list, admins=admin_list, date=datetime.date.today().strftime("%m/%d"))
 
 """
 called upon clicking on a subteam, displays tasks
@@ -35,6 +60,13 @@ def display_subteam(name):
     ret_data = fb.display_list(name, False) 
     
     return render_template('subteam.html', subteam=name, data=ret_data, date=datetime.date.today().strftime("%m/%d"))
+
+@app.route('/admin/<admin>')
+@requires_auth
+def display_admin(admin):
+    ret_data = fb.display_list(admin, False) 
+    
+    return render_template('subteam.html', subteam=admin, data=ret_data, date=datetime.date.today().strftime("%m/%d"))
 
 """
 adds a task
