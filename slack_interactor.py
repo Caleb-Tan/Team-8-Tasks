@@ -31,7 +31,7 @@ def handle_event(event_data):
     if "tasks" in msg or "task" in msg:
         ret_data = fb.display_list('Business', False)
         ret_data = filter(lambda x:username in [names.strip() for names in x[2].split(',')], ret_data)
-        text = "Click <http://server.palyrobotics.com:7000|here> to go to the Task Website\n"
+        text = "Click <http://team8tasks.serveo.net|here> to go to the Task Website\n"
         ongoing_tasks = return_tasks(ret_data, 'ongoing')
         overdue_tasks = return_tasks(ret_data, 'overdue')
         completed_tasks = return_tasks(ret_data, 'completed')
