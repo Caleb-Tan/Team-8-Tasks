@@ -142,7 +142,7 @@ def display_slack_tasks():
     if user != "":
         ret_data = filter(lambda x:user in [names.strip() for names in x[2].split(",")], ret_data) # splits people by commas, strips spaces from each name, then filters by if user is in array of names
     
-    text = "Click <http://server.palyrobotics.com:7000|here> to go to the Task Website\n"
+    text = "Click <http://team8tasks.serveo.net|here> to go to the Task Website\n"
     ongoing_tasks = slack.return_tasks(ret_data, 'ongoing')
     overdue_tasks = slack.return_tasks(ret_data, 'overdue')
     completed_tasks = slack.return_tasks(ret_data, 'completed')
