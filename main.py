@@ -150,7 +150,7 @@ def display_slack_tasks():
 
 @app.route('/user_request', methods=['POST'])
 def get_request():
-    print(request.data)
+    print(ast.literal_eval(request.data))
     return request.data["challenge"]
     # event_data = None
     # try:
