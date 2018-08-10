@@ -150,18 +150,16 @@ def display_slack_tasks():
 
 @app.route('/user_request', methods=['POST'])
 def get_request():
-    print(ast.literal_eval(request.data))
-    return ast.literal_eval(request.data)["challenge"]
-    # event_data = None
-    # try:
-    #     event_data = ast.literal_eval(request.data)
-    # except ValueError:
-    #     pass
+    event_data = None
+    try:
+        event_data = ast.literal_eval(request.data)
+    except ValueError:
+        pass
 
-    # if event_data != None and event_data.get('token') == SLACK_VERIFICATION_TOKEN and event_data.get('event').get('bot_id') == None:
-    #     slack.handle_event(event_data)
+    if event_data != None and event_data.get('token') == SLACK_VERIFICATION_TOKEN and event_data.get('event').get('bot_id') == None:
+        slack.handle_event(event_data)
     
-    # return ""
+    return ""
 
 """
  check_overdue() is set to run at 0:00 am (see scheduling.py)
