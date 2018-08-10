@@ -27,6 +27,7 @@ def handle_event(event_data):
     userid = message.get('user')
     username = convert_unicode(sc.api_call('users.info', user=userid)).get('user').get('profile').get('display_name')
     text = None
+    print(msg)
 
     if "tasks" in msg or "task" in msg:
         ret_data = fb.display_list('Business', False)
