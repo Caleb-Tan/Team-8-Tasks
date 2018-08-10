@@ -104,7 +104,7 @@ def remind_tasks(subteam):
                 overdue_tasks = return_tasks(users_tasks, 'overdue')
                 completed_tasks = return_tasks(users_tasks, 'completed')
                 dm_id = convert_unicode(sc.api_call('im.open', user=member.get('id'), return_im=True)).get('channel').get('id')
-                text = "Hi! Here are your tasks for today.\n Click <http://server.palyrobotics.com:7000|here> to go to the Task Website\n"
+                text = "Hi! Here are your tasks for today.\n Click <http://team8tasks.serveo.net|here> to go to the Task Website\n"
                 
                 sc.api_call('chat.postMessage', channel=dm_id, text=text, as_user=True, attachments=[{'text': ongoing_tasks, 'mrkdwn_in': ["text"], 'color': '#03572C'}, {'text': overdue_tasks, 'mrkdwn_in': ["text"], 'color': '#ff6666'}, {'text': completed_tasks, 'mrkdwn_in': ["text"]}])
 
