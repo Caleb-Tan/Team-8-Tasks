@@ -44,7 +44,7 @@ shows every subteam
 """
 @app.route('/')
 def list_subteams():
-    subteam_list = ['Business']
+    subteam_list = ['Business', 'Art']
     # management_list = {'Lab':'Vyomika Gupta', 'Pit':'Lawrence Chang', 'Treasury':'Amy Lin', 'Competition':'Jeffery Yu'}
     # specops_list = ['Drive Team', 'Strategy and Scouting', 'Zero Robotics', 'VEX']
     # admin_list = {'Team Captain': 'Jennifer Xu', 'Assistant Captain': 'Annalee Soohoo', 'Project Manager': 'Eli Zucker'}
