@@ -13,7 +13,7 @@ urllib3.disable_warnings()
 
 app = Flask(__name__) # flask app
 fb = Firebase_Interactor() # firebase initialization
-SLACK_VERIFICATION_TOKEN = 'RubANxonQSPFjp0u125Clrzi'
+SLACK_VERIFICATION_TOKEN = '' # verification token for Slack
 
 
 def check_auth(username, password):
